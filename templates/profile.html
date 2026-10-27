@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}- My Profile{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-4">
+        <div class="text-center mb-4">
+          <div class="fs-1">👤</div>
+          <h4 class="fw-bold mt-2">{{ user['name'] }}</h4>
+          <span class="badge bg-warning text-dark">Customer</span>
+        </div>
+
+        <!-- Read-only info -->
+        <div class="mb-3 p-3 rounded" style="background:#fff3e0">
+          <div class="row g-2 small">
+            <div class="col-12">
+              <strong>📧 Email:</strong> {{ user['email'] }}
+              <span class="text-muted ms-1">(cannot be changed)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Editable info -->
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+            <input type="text" name="name" class="form-control" required value="{{ user['name'] }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Phone Number <span class="text-danger">*</span></label>
+            <input type="tel" name="phone" class="form-control" required value="{{ user['phone'] or '' }}" placeholder="10-digit number">
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Address <span class="text-danger">*</span></label>
+            <textarea name="address" class="form-control" required rows="2" placeholder="Your full address">{{ user['address'] or '' }}</textarea>
+          </div>
+          <button type="submit" class="btn btn-orange w-100 fw-bold">
+            💾 Save Changes
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

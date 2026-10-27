@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}- My Orders{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="section-title mb-0">📦 My Orders</h4>
+    <a href="{{ url_for('food_order') }}" class="btn btn-orange btn-sm">+ Order More</a>
+  </div>
+  {% if orders %}
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr><th>#</th><th>Item</th><th>Qty</th><th>Price</th><th>Status</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+          {% for o in orders %}
+          <tr>
+            <td class="text-muted small">{{ o['id'] }}</td>
+            <td class="fw-semibold">{{ o['item_name'] }}</td>
+            <td>{{ o['quantity'] }}</td>
+            <td class="text-success fw-bold">₹{{ o['price'] }}</td>
+            <td>
+              {% if o['status'] == 'pending' %}
+                <span class="badge badge-pending">⏳ Pending</span>
+              {% elif o['status'] == 'confirmed' %}
+                <span class="badge badge-confirmed">✅ Confirmed</span>
+              {% elif o['status'] == 'rejected' %}
+                <span class="badge badge-rejected">❌ Rejected</span>
+              {% else %}
+                <span class="badge bg-secondary">{{ o['status']|title }}</span>
+              {% endif %}
+            </td>
+            <td class="text-muted small">{{ o['created_at'][:16] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <div class="text-center py-5 text-muted">
+    <div class="fs-1">🛍️</div>
+    <p class="mt-2">No orders yet. <a href="{{ url_for('food_order') }}" class="text-warning">Order now!</a></p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

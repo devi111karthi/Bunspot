@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}- Register{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card p-4">
+        <h3 class="text-center fw-bold mb-4" style="color:#f7931e">🍔 Create Account</h3>
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+            <input type="text" name="name" class="form-control" required placeholder="Your name">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+            <input type="email" name="email" class="form-control" required placeholder="your@email.com">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Phone Number <span class="text-danger">*</span></label>
+            <input type="tel" name="phone" class="form-control" required placeholder="10-digit number" pattern="[0-9]{10}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Address <span class="text-danger">*</span></label>
+            <textarea name="address" class="form-control" required rows="2" placeholder="Your full address"></textarea>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
+            <input type="password" name="password" class="form-control" required placeholder="Min 6 characters" minlength="6">
+          </div>
+          <button type="submit" class="btn btn-orange w-100 fw-bold">Create Account</button>
+        </form>
+        <hr>
+        <p class="text-center text-muted mb-0">
+          Already have an account? <a href="{{ url_for('login') }}" class="text-warning fw-bold">Login here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

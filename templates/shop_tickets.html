@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}- Customer Issues{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="section-title mb-0">🎫 Customer Issues</h4>
+    <span class="badge bg-info text-dark fs-6">{{ tickets|length }} tickets</span>
+  </div>
+
+  {% if tickets %}
+    {% for t in tickets %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            <h6 class="fw-bold mb-0">{{ t['subject'] }}</h6>
+            <small class="text-muted">by {{ t['customer_name'] or 'Unknown' }} · {{ t['created_at'][:16] }}</small>
+          </div>
+          <span class="badge badge-{{ t['status'] }}">{{ t['status']|title }}</span>
+        </div>
+        <p class="text-muted mb-2">{{ t['message'] }}</p>
+        {% if t['reply'] %}
+        <div class="alert alert-success p-2 small mb-2">
+          <strong>Your Reply:</strong> {{ t['reply'] }}
+        </div>
+        {% else %}
+        <form method="POST" class="d-flex gap-2">
+          <input type="hidden" name="ticket_id" value="{{ t['id'] }}">
+          <input type="text" name="reply" class="form-control form-control-sm" placeholder="Type your reply..." required>
+          <button type="submit" class="btn btn-orange btn-sm px-3">Send</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+  <div class="text-center py-5 text-muted">
+    <div class="fs-1">🎫</div>
+    <p class="mt-2">No customer issues yet.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

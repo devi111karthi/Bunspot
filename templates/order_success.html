@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}- Order Placed!{% endblock %}
+{% block content %}
+<div class="container py-5 text-center">
+  <div class="card p-5 mx-auto" style="max-width:500px">
+    <div class="fs-1 mb-3">🎉</div>
+    <h3 class="fw-bold text-success">Order Placed Successfully!</h3>
+    <p class="text-muted mt-2">Your order has been received. The shop will confirm it shortly.</p>
+    <div class="alert mt-3" style="background:#fff3e0; border:1px solid #f7931e">
+      <div class="fw-bold">Payment Method</div>
+      <div class="text-muted">
+        {% if payment_method == 'upi' %}📱 UPI Payment
+        {% elif payment_method == 'cash' %}💵 Cash on Delivery
+        {% else %}💳 Card at Counter
+        {% endif %}
+      </div>
+      <hr>
+      <div class="fw-bold text-success fs-5">Total: ₹{{ total }}</div>
+    </div>
+    <div class="d-flex gap-3 justify-content-center mt-3">
+      <a href="{{ url_for('my_orders') }}" class="btn btn-orange fw-bold">View My Orders</a>
+      <a href="{{ url_for('food_order') }}" class="btn btn-outline-secondary">Order More</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

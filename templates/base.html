@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BunSpot {% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <style>
+    body { background: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+    /* CUSTOMER NAVBAR */
+    .navbar-customer { background: linear-gradient(135deg, #ff6b35, #f7931e); }
+    .navbar-customer .navbar-brand, .navbar-customer .nav-link,
+    .navbar-customer .navbar-text { color: #fff !important; }
+    .navbar-customer .nav-link:hover { color: #ffe0cc !important; }
+    .navbar-customer .nav-link.active { background: rgba(255,255,255,0.2); border-radius: 6px; }
+    /* SHOP NAVBAR */
+    .navbar-shop { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+    .navbar-shop .navbar-brand, .navbar-shop .nav-link,
+    .navbar-shop .navbar-text { color: #fff !important; }
+    .navbar-shop .nav-link:hover { color: #f7931e !important; }
+    .navbar-shop .nav-link.active { color: #f7931e !important; border-bottom: 2px solid #f7931e; }
+    /* CARDS */
+    .card { border: none; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    .card-header { border-radius: 12px 12px 0 0 !important; }
+    /* BADGES */
+    .badge-pending  { background: #ffc107; color: #333; }
+    .badge-confirmed{ background: #28a745; color: #fff; }
+    .badge-rejected { background: #dc3545; color: #fff; }
+    .badge-open     { background: #17a2b8; color: #fff; }
+    .badge-resolved { background: #6c757d; color: #fff; }
+    /* STAT CARDS */
+    .stat-card { border-radius: 16px; padding: 24px; color: #fff; text-align: center; }
+    .stat-card h2 { font-size: 2.5rem; font-weight: 700; margin: 0; }
+    .stat-card p  { margin: 0; opacity: 0.85; font-size: 0.95rem; }
+    .stat-orders   { background: linear-gradient(135deg,#f7931e,#ff6b35); }
+    .stat-bookings { background: linear-gradient(135deg,#667eea,#764ba2); }
+    .stat-tickets  { background: linear-gradient(135deg,#11998e,#38ef7d); }
+    .stat-menu     { background: linear-gradient(135deg,#f953c6,#b91d73); }
+    /* SECTION TITLE */
+    .section-title { border-left: 4px solid #f7931e; padding-left: 12px; font-weight: 700; margin-bottom: 20px; }
+    .btn-orange { background: #f7931e; color: #fff; border: none; }
+    .btn-orange:hover { background: #e0821a; color: #fff; }
+  </style>
+</head>
+<body>
+
+{% if page_role == 'shop' %}
+<!-- SHOP NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-shop">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-4" href="{{ url_for('shop_dashboard') }}">
+      🍔 BunSpot <small class="fs-6 fw-normal opacity-75">Shop</small>
+    </a>
+    <button class="navbar-toggler border-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#shopNav">
+      <span class="navbar-toggler-icon" style="filter:invert(1)"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="shopNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'shop_dashboard' %}active{% endif %}"
+             href="{{ url_for('shop_dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'shop_orders' %}active{% endif %}"
+             href="{{ url_for('shop_orders') }}"><i class="bi bi-bag-check"></i> Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'shop_bookings' %}active{% endif %}"
+             href="{{ url_for('shop_bookings') }}"><i class="bi bi-calendar-check"></i> Bookings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'shop_tickets' %}active{% endif %}"
+             href="{{ url_for('shop_tickets') }}"><i class="bi bi-headset"></i> Issues</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'shop_inventory' %}active{% endif %}"
+             href="{{ url_for('shop_inventory') }}"><i class="bi bi-grid"></i> Menu/Inventory</a>
+        </li>
+      </ul>
+      <span class="navbar-text me-3">
+        <i class="bi bi-person-circle"></i> {{ session.get('shop_name','Owner') }}
+      </span>
+      <a href="{{ url_for('logout', role='shop') }}" class="btn btn-outline-light btn-sm">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </div>
+  </div>
+</nav>
+
+{% elif page_role == 'customer' %}
+<!-- CUSTOMER NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-customer">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-4" href="{{ url_for('customer_dashboard') }}">
+      🍔 BunSpot
+    </a>
+    <button class="navbar-toggler border-light" type="button" data-bs-toggle="collapse" data-bs-target="#custNav">
+      <span class="navbar-toggler-icon" style="filter:invert(1)"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="custNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'customer_dashboard' %}active{% endif %}"
+             href="{{ url_for('customer_dashboard') }}"><i class="bi bi-house"></i> Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'food_order' %}active{% endif %}"
+             href="{{ url_for('food_order') }}"><i class="bi bi-bag"></i> Order Food</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'my_orders' %}active{% endif %}"
+             href="{{ url_for('my_orders') }}"><i class="bi bi-receipt"></i> My Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'table_booking' %}active{% endif %}"
+             href="{{ url_for('table_booking') }}"><i class="bi bi-table"></i> Book Table</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'my_bookings' %}active{% endif %}"
+             href="{{ url_for('my_bookings') }}"><i class="bi bi-calendar2-check"></i> My Bookings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'customer_care' %}active{% endif %}"
+             href="{{ url_for('customer_care') }}"><i class="bi bi-headset"></i> Support</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'profile' %}active{% endif %}"
+             href="{{ url_for('profile') }}"><i class="bi bi-person-circle"></i> Profile</a>
+        </li>
+      </ul>
+      <a href="{{ url_for('logout', role='customer') }}" class="btn btn-outline-light btn-sm">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </div>
+  </div>
+</nav>
+
+{% else %}
+<!-- PUBLIC NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-customer">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-4" href="{{ url_for('home') }}">🍔 BunSpot</a>
+    <div class="ms-auto">
+      <a href="{{ url_for('login') }}"    class="btn btn-outline-light btn-sm me-2">Login</a>
+      <a href="{{ url_for('register') }}" class="btn btn-light btn-sm text-warning fw-bold">Register</a>
+    </div>
+  </div>
+</nav>
+{% endif %}
+
+<!-- FLASH MESSAGES -->
+<div class="container mt-3">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for cat, msg in messages %}
+        <div class="alert alert-{{ cat }} alert-dismissible fade show" role="alert">
+          {{ msg }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+{% block content %}{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

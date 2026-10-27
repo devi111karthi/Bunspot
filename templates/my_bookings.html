@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}- My Bookings{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="section-title mb-0">🪑 My Table Bookings</h4>
+    <a href="{{ url_for('table_booking') }}" class="btn btn-orange btn-sm">+ New Booking</a>
+  </div>
+  {% if bookings %}
+  <div class="row g-3">
+    {% for b in bookings %}
+    <div class="col-md-6">
+      <div class="card p-3">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="fw-bold mb-1">📅 {{ b['booking_date'] }} at {{ b['booking_time'] }}</h6>
+            <p class="mb-1 text-muted small">👥 {{ b['guests'] }} guests</p>
+            {% if b['note'] %}<p class="mb-0 text-muted small">📝 {{ b['note'] }}</p>{% endif %}
+          </div>
+          <span class="badge badge-{{ b['status'] }}">{{ b['status']|title }}</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-5 text-muted">
+    <div class="fs-1">🪑</div>
+    <p class="mt-2">No bookings yet. <a href="{{ url_for('table_booking') }}" class="text-warning">Book a table!</a></p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

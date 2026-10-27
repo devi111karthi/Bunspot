@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}- Shop Dashboard{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h4 class="section-title">🏪 Shop Dashboard</h4>
+
+  <div class="row g-4 mb-4">
+    <div class="col-md-3">
+      <a href="{{ url_for('shop_orders') }}" class="text-decoration-none">
+        <div class="stat-card stat-orders">
+          <h2>{{ total_orders }}</h2>
+          <p>Total Orders</p>
+          <small>{{ pending_orders }} pending →</small>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{{ url_for('shop_bookings') }}" class="text-decoration-none">
+        <div class="stat-card stat-bookings">
+          <h2>{{ total_bookings }}</h2>
+          <p>Table Bookings</p>
+          <small>{{ pending_books }} pending →</small>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{{ url_for('shop_tickets') }}" class="text-decoration-none">
+        <div class="stat-card stat-tickets">
+          <h2>{{ open_tickets }}</h2>
+          <p>Open Issues</p>
+          <small>Click to resolve →</small>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{{ url_for('shop_inventory') }}" class="text-decoration-none">
+        <div class="stat-card stat-menu">
+          <h2>{{ total_menu }}</h2>
+          <p>Menu Items</p>
+          <small>Manage inventory →</small>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Quick Links -->
+  <div class="row g-3 mt-2">
+    <div class="col-md-3">
+      <a href="{{ url_for('shop_orders') }}" class="card p-3 text-center text-decoration-none h-100">
+        <div class="fs-2">📦</div>
+        <div class="fw-bold mt-1">Manage Orders</div>
+        <div class="text-muted small">Accept or reject orders</div>
+      </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{{ url_for('shop_bookings') }}" class="card p-3 text-center text-decoration-none h-100">
+        <div class="fs-2">🪑</div>
+        <div class="fw-bold mt-1">Table Bookings</div>
+        <div class="text-muted small">Confirm or cancel tables</div>
+      </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{{ url_for('shop_tickets') }}" class="card p-3 text-center text-decoration-none h-100">
+        <div class="fs-2">🎫</div>
+        <div class="fw-bold mt-1">Customer Issues</div>
+        <div class="text-muted small">Reply to support tickets</div>
+      </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{{ url_for('shop_inventory') }}" class="card p-3 text-center text-decoration-none h-100">
+        <div class="fs-2">🍔</div>
+        <div class="fw-bold mt-1">Menu / Inventory</div>
+        <div class="text-muted small">Add or remove items</div>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

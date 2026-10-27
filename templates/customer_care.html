@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}- Customer Support{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h4 class="section-title">💬 Customer Support</h4>
+  <div class="row g-4">
+    <div class="col-md-5">
+      <div class="card p-4">
+        <h5 class="fw-bold mb-3">Submit a Request</h5>
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Subject</label>
+            <input type="text" name="subject" class="form-control" required placeholder="e.g. Wrong item delivered">
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Message</label>
+            <textarea name="message" class="form-control" rows="4" required placeholder="Describe your issue..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-orange w-100 fw-bold">Send Message</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <h5 class="fw-bold mb-3">My Tickets</h5>
+      {% if tickets %}
+        {% for t in tickets %}
+        <div class="card mb-3 p-3">
+          <div class="d-flex justify-content-between">
+            <strong>{{ t['subject'] }}</strong>
+            <span class="badge badge-{{ t['status'] }}">{{ t['status']|title }}</span>
+          </div>
+          <p class="text-muted small mt-1 mb-1">{{ t['message'] }}</p>
+          {% if t['reply'] %}
+          <div class="alert alert-success p-2 mb-0 small">
+            <strong>Shop Reply:</strong> {{ t['reply'] }}
+          </div>
+          {% endif %}
+          <small class="text-muted">{{ t['created_at'][:16] }}</small>
+        </div>
+        {% endfor %}
+      {% else %}
+      <div class="text-center py-4 text-muted">
+        <div class="fs-1">💬</div>
+        <p class="mt-2">No tickets yet.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

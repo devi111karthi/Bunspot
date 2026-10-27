@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}- My Dashboard{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h4 class="section-title">Welcome back, {{ session.get('customer_name') }}! 👋</h4>
+
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="stat-card stat-orders">
+        <h2>{{ orders|length }}</h2>
+        <p>Total Orders</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card stat-bookings">
+        <h2>{{ bookings|length }}</h2>
+        <p>Table Bookings</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card stat-tickets">
+        <h2>🍔</h2>
+        <p>Enjoy Your Meal!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card p-4 text-center h-100">
+        <div class="fs-1 mb-2">🍔</div>
+        <h5 class="fw-bold">Order Food</h5>
+        <p class="text-muted small">Browse our menu and place an order</p>
+        <a href="{{ url_for('food_order') }}" class="btn btn-orange mt-auto">Order Now</a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 text-center h-100">
+        <div class="fs-1 mb-2">🪑</div>
+        <h5 class="fw-bold">Book a Table</h5>
+        <p class="text-muted small">Reserve your spot in advance</p>
+        <a href="{{ url_for('table_booking') }}" class="btn btn-orange mt-auto">Book Now</a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 text-center h-100">
+        <div class="fs-1 mb-2">💬</div>
+        <h5 class="fw-bold">Customer Support</h5>
+        <p class="text-muted small">Get help with your orders or bookings</p>
+        <a href="{{ url_for('customer_care') }}" class="btn btn-orange mt-auto">Get Help</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Orders -->
+  {% if orders %}
+  <div class="card mt-4">
+    <div class="card-header fw-bold" style="background:#fff3e0">📦 Recent Orders</div>
+    <div class="table-responsive">
+      <table class="table mb-0 align-middle">
+        <thead class="table-light">
+          <tr><th>Item</th><th>Qty</th><th>Price</th><th>Status</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+          {% for o in orders[:5] %}
+          <tr>
+            <td>{{ o['item_name'] }}</td>
+            <td>{{ o['quantity'] }}</td>
+            <td>₹{{ o['price'] }}</td>
+            <td><span class="badge badge-{{ o['status'] }}">{{ o['status']|title }}</span></td>
+            <td class="text-muted small">{{ o['created_at'][:10] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

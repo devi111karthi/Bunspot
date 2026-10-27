@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}- Book a Table{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-4">
+        <h4 class="section-title">🪑 Book a Table</h4>
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Date</label>
+            <input type="date" name="booking_date" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Time</label>
+            <input type="time" name="booking_time" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Number of Guests</label>
+            <input type="number" name="guests" class="form-control" min="1" max="20" required placeholder="e.g. 4">
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Special Note (optional)</label>
+            <textarea name="note" class="form-control" rows="2" placeholder="Any special requests?"></textarea>
+          </div>
+          <button type="submit" class="btn btn-orange w-100 fw-bold">
+            <i class="bi bi-calendar-check"></i> Confirm Booking
+          </button>
+        </form>
+      </div>
+      <div class="text-center mt-3">
+        <a href="{{ url_for('my_bookings') }}" class="text-muted small">View my bookings →</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

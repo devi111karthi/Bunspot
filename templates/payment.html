@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}- Payment{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <!-- Order Summary -->
+      <div class="card mb-4">
+        <div class="card-header fw-bold" style="background:#fff3e0">🧾 Order Summary</div>
+        <div class="card-body p-0">
+          <table class="table mb-0 align-middle">
+            <thead class="table-light">
+              <tr><th>Item</th><th class="text-center">Qty</th><th class="text-end">Price</th></tr>
+            </thead>
+            <tbody>
+              {% for item in order_items %}
+              <tr>
+                <td>{{ item.name }}</td>
+                <td class="text-center">{{ item.qty }}</td>
+                <td class="text-end text-success fw-bold">₹{{ item.subtotal }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr class="table-warning">
+                <td colspan="2" class="fw-bold">Total</td>
+                <td class="text-end fw-bold fs-5 text-success">₹{{ total }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Payment Options -->
+      <div class="card">
+        <div class="card-header fw-bold" style="background:#1a1a2e; color:#fff">💳 Choose Payment Method</div>
+        <div class="card-body">
+
+          <div class="d-flex flex-column gap-3" id="payOptions">
+            <!-- UPI -->
+            <div class="border rounded p-3" style="cursor:pointer" onclick="selectPay('upi')" id="opt-upi">
+              <div class="d-flex align-items-center gap-3">
+                <span class="fs-2">📱</span>
+                <div>
+                  <div class="fw-bold">UPI / QR Code</div>
+                  <div class="text-muted small">Pay using PhonePe, GPay, Paytm or any UPI app</div>
+                </div>
+              </div>
+            </div>
+            <!-- Cash -->
+            <div class="border rounded p-3" style="cursor:pointer" onclick="selectPay('cash')" id="opt-cash">
+              <div class="d-flex align-items-center gap-3">
+                <span class="fs-2">💵</span>
+                <div>
+                  <div class="fw-bold">Cash on Delivery</div>
+                  <div class="text-muted small">Pay when your order arrives</div>
+                </div>
+              </div>
+            </div>
+            <!-- Card -->
+            <div class="border rounded p-3" style="cursor:pointer" onclick="selectPay('card')" id="opt-card">
+              <div class="d-flex align-items-center gap-3">
+                <span class="fs-2">💳</span>
+                <div>
+                  <div class="fw-bold">Card Payment</div>
+                  <div class="text-muted small">Pay at counter with debit/credit card</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- UPI QR Section -->
+          <div id="upiSection" class="d-none mt-3 text-center">
+            <p class="fw-bold text-muted mb-2">Scan QR Code to Pay <span class="text-success">₹{{ total }}</span></p>
+            <div class="border rounded p-3 d-inline-block mb-3" style="background:#f8f9fa">
+              <!-- Placeholder QR using a public QR API -->
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=owner@bunspot&pn=BunSpot&am={{ total }}&cu=INR"
+                   alt="UPI QR Code" width="180" height="180">
+            </div>
+            <p class="small text-muted">UPI ID: <strong>owner@bunspot</strong></p>
+            <p class="small text-muted">Amount: <strong class="text-success">₹{{ total }}</strong></p>
+          </div>
+
+          <!-- Confirm Button -->
+          <form method="POST" action="{{ url_for('confirm_payment') }}" class="mt-4">
+            <input type="hidden" name="order_ids" value="{{ order_ids }}">
+            <input type="hidden" name="payment_method" id="payMethod" value="">
+            <input type="hidden" name="total" value="{{ total }}">
+            <button type="submit" id="confirmBtn" class="btn btn-orange w-100 fw-bold btn-lg" disabled>
+              ✅ Confirm & Place Order
+            </button>
+            <p class="text-muted small text-center mt-2">Select a payment method to continue</p>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function selectPay(method) {
+  // Reset all
+  ['upi','cash','card'].forEach(m => {
+    document.getElementById('opt-' + m).style.border = '1px solid #dee2e6';
+    document.getElementById('opt-' + m).style.background = '#fff';
+  });
+  // Highlight selected
+  document.getElementById('opt-' + method).style.border = '2px solid #f7931e';
+  document.getElementById('opt-' + method).style.background = '#fff8f0';
+  // Show/hide UPI QR
+  document.getElementById('upiSection').classList.toggle('d-none', method !== 'upi');
+  // Enable confirm button
+  document.getElementById('payMethod').value = method;
+  document.getElementById('confirmBtn').disabled = false;
+  document.getElementById('confirmBtn').textContent = 
+    method === 'upi'  ? '✅ I have paid via UPI' :
+    method === 'cash' ? '✅ Confirm – Pay on Delivery' :
+                        '✅ Confirm – Pay at Counter';
+}
+</script>
+{% endblock %}
